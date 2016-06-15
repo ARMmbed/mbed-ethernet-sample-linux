@@ -1,0 +1,17 @@
+{
+  "name": "mbed-ethernet-sample-linux",
+  "version": "0.0.0",
+  "bin": "./source",
+  "private": true,
+  "description": "Linux mbedConnectorInterface Example ",
+  "author": "Doug Anson doug.anson@arm.com",
+  "license": "Apache-2.0",
+  "extraIncludes": [],
+  "dependencies": {
+    "mbed-client": "^1.12.4",
+    "mbed-connector-interface": "^1.2.47",
+    "mbed-endpoint-network-linux": "^0.0.1"
+  },
+  "targetDependencies": {},
+  "bin": "./source/"
+}
