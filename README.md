@@ -1,6 +1,6 @@
-# mbed-ethernet-sample
+# mbed-ethernet-sample-linux
 
-mbed ConnectorInterface sample application for mbedOS
+mbed ConnectorInterface sample application for Linux
 
-Yotta Target: frdm-k64f-gcc
-Network: Ethernet
+Yotta Target: x86-linux-native
+Network: Ethernet (native linux)
