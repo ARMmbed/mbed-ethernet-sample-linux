@@ -23,11 +23,11 @@
 // CUSTOMIZE ME: Define the core Device Types, Firmware, Hardware, Software information
 #define MY_DEVICE_MFG			"Ubuntu"
 #define MY_DEVICE_TYPE			"mbed-endpoint"
-#define MY_DEVICE_MODEL			"ubuntu"
-#define MY_DEVICE_SERIAL 		"0123777789"
-#define MY_FIRMWARE_VERSION		"1.0.1"
-#define MY_HARDWARE_VERSION		"1.0.2"
-#define MY_SOFTWARE_VERSION		"1.0.3"
+#define MY_DEVICE_MODEL			"linux"
+#define MY_DEVICE_SERIAL 		"1010101010"
+#define MY_FIRMWARE_VERSION		"0.0.2"
+#define MY_HARDWARE_VERSION		"0.0.30"
+#define MY_SOFTWARE_VERSION		"1.2.51"
 
 // Passphrase to supply for data management authentication
 #define MY_DM_PASSPHRASE		"arm1234"
@@ -40,7 +40,7 @@
 
 // Logger
 #include "mbed-connector-interface/Logger.h"
-Serial pc(USBTX,USBRX);
+static Serial pc(USBTX,USBRX);
 Logger logger(&pc);
 
 // Include the default Device Management Responders
@@ -65,6 +65,18 @@ StaticResource static_sample(&logger,"101","1010","hello mbed");
 // Sample Dynamic Resource (a counter)
 #include "mbed-endpoint-resources/SampleDynamicResource.h"
 SampleDynamicResource sample_counter(&logger,"123","4567",true);		// "true" -> resource is observable
+
+// Light Resource
+#include "mbed-endpoint-resources/LightResource.h"
+LightResource light(&logger,"311","5850");
+
+// Temperature Resource
+#include "mbed-endpoint-resources/TemperatureResource.h"
+TemperatureResource temperature(&logger,"303","5700",true);         		// "true" --> resource is observable
+
+// Accelerometer Resource
+#include "mbed-endpoint-resources/AccelerometerResource.h"
+AccelerometerResource accel(&logger,"888","7700",true);         	   	// "true" --> resource is observable
 
 // Custom Connector URL and Port number for CoAP...
 char *connector_url = (char *)"coap://api.connector.mbed.com:5684";        	// mbed Device Connector URL and DTLS port number for CoAP
@@ -94,6 +106,11 @@ Connector::Options *configure_endpoint(Connector::OptionsBuilder &config)
         // add a Sample Counter (Dynamic Resource)
         .addResource(&sample_counter,10000)			// observe every 10 seconds
                  
+        // Add my specific physical dynamic resources...
+        .addResource(&light)
+        .addResource(&temperature,8000) 			// observe every 8 seconds
+        .addResource(&accel,7000)   			        // observe every 7 seconds	
+                   
         // finalize the configuration...
         .build();
 }
@@ -105,11 +122,14 @@ void app_start(int, char *[])
     pc.baud(115200);
 	
     // Announce
-    logger.log("\r\n\r\nmbed mDS Sample Endpoint v3.0 (Linux)");
+    logger.log("\r\n\r\nmbed mDS Sample Endpoint v3.0 (Ethernet)");
     
     // Register the default Device Management Responders
+    dm_processor.setInitializeHandler(dm_initialize);
     dm_processor.setRebootResponderHandler(dm_reboot_responder);
     dm_processor.setResetResponderHandler(dm_reset_responder);
+    dm_processor.setFOTAManifestHandler(dm_set_manifest);
+    dm_processor.setFOTAImageHandler(dm_set_fota_image);
     dm_processor.setFOTAInvocationHandler(dm_invoke_fota);
 	 
     // we have to plumb our network first

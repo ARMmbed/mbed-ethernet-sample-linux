@@ -27,11 +27,11 @@
 #include "mbed-connector-interface/DynamicResource.h"
 
 // our Light sensor
-DigitalOut  __light(LED3);
+bool __light = false;
 
 // possible Light states
-#define OFF             "1"
-#define ON              "0"
+#define OFF             "0"
+#define ON              "1"
 
 /** LightResource class
  */
@@ -56,6 +56,7 @@ public:
     virtual string get() {
         string result(OFF);
         if (__light) result = ON;
+	this->logger()->log("get(light): State: %s",result.c_str());
         return result;
     }
 
@@ -66,6 +67,9 @@ public:
     virtual void put(const string value) {
         if (value.compare(string(OFF)) == 0) __light = 0;
         else __light = 1;
+	string result(OFF);
+        if (__light) result = ON;
+ 	this->logger()->log("put(light): State: %s",result.c_str());	
     }
 };
 

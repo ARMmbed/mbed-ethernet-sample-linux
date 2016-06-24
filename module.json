@@ -1,6 +1,6 @@
 {
   "name": "mbed-ethernet-sample-linux",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bin": "./source",
   "private": true,
   "description": "Linux mbedConnectorInterface Example ",

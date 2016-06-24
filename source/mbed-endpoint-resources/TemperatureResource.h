@@ -26,20 +26,8 @@
 // Base class
 #include "mbed-connector-interface/DynamicResource.h"
 
-// our Temperature sensor
-#include "lm75b/lm75b.h"
-LM75B __temp_sensor(D14,D15);
-
-// HACK until mbedOS sprintf() works with %f....
-static void __sprintf(char *result,int length,float f) {
-	int whole = 0;
-	int dec = 0;
-	whole = (int)f;
-	f = (f-whole)*100;
-	dec = (int)f;
-  	memset(result,0,length);
-  	sprintf(result,"%d.%d",whole,dec);
-}
+// Synthetic temperature sensor
+float __temp_sensor = 25.1;
 
 /** 
  * TemperatureResource class
@@ -63,9 +51,19 @@ public:
     */
     virtual string get() {
     	char buf[10];
-    	__sprintf(buf,10,__temp_sensor.temp());
+    	sprintf(buf,"%.1f",__temp_sensor);
+ 	this->updateTemp();
         return string(buf);
     }
+
+private:
+    void updateTemp() {
+	if (rand()%2) 
+	     __temp_sensor += 0.13;
+	else
+	     __temp_sensor -= 0.12;
+    }
+
 };
 
 #endif // __TEMPERATURE_RESOURCE_H__
