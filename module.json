@@ -10,7 +10,7 @@
   "dependencies": {
     "mbed-client": "^1.12.4",
     "mbed-connector-interface": "^1.2.51",
-    "mbed-endpoint-network-linux": "^0.0.29"
+    "mbed-endpoint-network-linux": "^0.0.30"
   },
   "targetDependencies": {},
   "bin": "./source/"
