@@ -1,6 +1,6 @@
 {
   "name": "mbed-ethernet-sample-linux",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "bin": "./source",
   "private": true,
   "description": "Linux mbedConnectorInterface Example ",
@@ -9,8 +9,8 @@
   "extraIncludes": [],
   "dependencies": {
     "mbed-client": "^1.12.4",
-    "mbed-connector-interface": "^1.2.47",
-    "mbed-endpoint-network-linux": "^0.0.1"
+    "mbed-connector-interface": "^1.2.51",
+    "mbed-endpoint-network-linux": "^0.0.29"
   },
   "targetDependencies": {},
   "bin": "./source/"
